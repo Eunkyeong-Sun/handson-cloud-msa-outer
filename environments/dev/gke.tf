@@ -63,5 +63,13 @@ module "gke_auth" {
   cluster_name = google_container_cluster.primary.name
   location     = google_container_cluster.primary.location
 }
- 
-resource "kubernetes_namespace" "default" {}
+
+resource "kubernetes_namespace" "default" {
+    metadata {
+        annotations      = {}
+        labels           = {
+          istio-injection = "enabled"
+        }
+        name             = "default"
+    }
+}
