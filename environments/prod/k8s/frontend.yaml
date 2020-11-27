@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
 metadata:
   name: eshop-frontend
 spec:
@@ -7,21 +7,9 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: eshop-frontend
-  minReplicas: 2
-  maxReplicas: 4
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: AverageValue
-        averageValue: 100Mi
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
   selector:
     matchLabels:
       app: eshop-frontend
