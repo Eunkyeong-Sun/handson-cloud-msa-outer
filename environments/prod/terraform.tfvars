@@ -1,4 +1,4 @@
-environment = "prod"
+environment = "prd"
 project_id = "architect-certification-289902"
 member_id  = "19"
 region     = "australia-southeast1"
