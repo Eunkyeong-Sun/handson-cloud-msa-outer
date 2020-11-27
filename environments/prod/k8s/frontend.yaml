@@ -3,7 +3,21 @@ kind: Deployment
 metadata:
   name: eshop-frontend
 spec:
-  replicas: 2
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: AverageValue
+        averageValue: 100Mi
   selector:
     matchLabels:
       app: eshop-frontend
