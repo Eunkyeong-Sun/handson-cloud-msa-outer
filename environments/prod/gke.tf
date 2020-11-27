@@ -18,6 +18,20 @@ resource "google_container_cluster" "primary" {
       issue_client_certificate = false
     }
   }
+
+  cluster_autoscaling {
+    enabled = true
+    resource_limits {
+      resource_type = "cpu"
+      minimum = 4
+      maximum = 16
+    }
+    resource_limits {
+      resource_type = "memory"
+      minimum = 15
+      maximum = 60
+    }
+  }
 }
 
 # Separately Managed Node Pool
@@ -45,23 +59,4 @@ resource "google_container_node_pool" "primary_nodes" {
       disable-legacy-endpoints = "true"
     }
   }
-}
-
-module "gke_auth" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/auth"
-  version = "~> 9.1"
- 
-  project_id   = var.project_id
-  cluster_name = google_container_cluster.primary.name
-  location     = google_container_cluster.primary.location
-}
-
-resource "kubernetes_namespace" "default" {
-    metadata {
-        annotations      = {}
-        labels           = {
-          istio-injection = "enabled"
-        }
-        name             = "default"
-    }
 }
